@@ -12,7 +12,7 @@ from json import dumps, loads
 
 consumer = KafkaConsumer(
     'factura',
-     bootstrap_servers=['192.168.4.27:9092'],
+     bootstrap_servers=['192.168.4.25:9092'],
      auto_offset_reset='earliest',
      enable_auto_commit=True,
      group_id='fact',
@@ -29,17 +29,19 @@ while(True):
         ordenCompra.nPrecioTotal = message["nPrecioTotal"]
         ordenCompra.dFechaCompra = message["dFechaCompra"]
         ordenCompra.sEstado = message["sEstado"]
+        ordenCompra.lDetalleCompra = message["lDetalleCompra"]
         
         
         json = {
                     "nCodigoOrden" : ordenCompra.nCodigoOrden,
                     "sRucCliente" : ordenCompra.sRucCliente,
                     "nPrecioTotal" : ordenCompra.nPrecioTotal,
-                    "sEstado" : "Reservado"
+                    "sEstado" : "Reservado",
+                    "lDetalleCompra" : ordenCompra.lDetalleCompra
                 }
         print(dumps(json))
     
-        producer = KafkaProducer(bootstrap_servers=['192.168.4.27:9092'],
+        producer = KafkaProducer(bootstrap_servers=['192.168.4.25:9092'],
                              value_serializer=lambda x: 
                              dumps(x).encode('utf-8'))
         producer.send('cuentas', value=json)    

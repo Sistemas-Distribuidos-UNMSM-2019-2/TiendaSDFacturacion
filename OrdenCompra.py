@@ -13,4 +13,5 @@ class OrdenCompraModel:
     dFechaCompra = datetime.datetime.now()
     dFechaPago = datetime.datetime.now()
     sEstado = ""
+    lDetalleCompra = []
 
